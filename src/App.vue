@@ -1,14 +1,41 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/login">login</router-link>
+      <div v-if="isAuthenticated">
+        <router-link to="/">Home</router-link> |
+        <a href="#" @click.prevent="logout">logout</a>
+      </div>
+      <div v-else>
+        <router-link to="/login">login</router-link>
+      </div>
     </div>
     <div class="container">
       <router-view/>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'App',
+  data(){
+    return {
+      // true or false가 isAuthenticated에 저장됨
+      isAuthenticated: this.$session.has('jwt')
+    }
+  },
+  methods: {
+    logout(){
+      this.$session.destroy()
+      this.$router.push('/login')
+    },
+  },
+  // 지금 사용자가 보고있는 화면이 렌더링이 다시 된다면
+  updated(){
+    this.isAuthenticated = this.$session.has('jwt')
+  },
+}
+</script>
 
 <style>
 #app {
