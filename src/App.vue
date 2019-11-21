@@ -21,18 +21,20 @@ export default {
   data(){
     return {
       // true or false가 isAuthenticated에 저장됨
-      isAuthenticated: this.$session.has('jwt')
+      // isAuthenticated: this.$session.has('jwt')
+      isAuthenticated: this.$store.getters.isAuthenticated
     }
   },
   methods: {
     logout(){
-      this.$session.destroy()
+      // this.$session.destroy()
+      this.$store.dispatch('/logout')
       this.$router.push('/login')
     },
   },
   // 지금 사용자가 보고있는 화면이 렌더링이 다시 된다면
   updated(){
-    this.isAuthenticated = this.$session.has('jwt')
+    this.isAuthenticated = this.$store.getters.isAuthenticated
   },
 }
 </script>
